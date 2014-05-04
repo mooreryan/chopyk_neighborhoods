@@ -23,6 +23,9 @@ describe "Static pages" do
     click_link 'About'
     expect(page).to have_title(full_title(''))
 
+    click_link 'Upload'
+    expect(page).to have_title(full_title('Upload'))
+
     # TODO: figure out how to check external links
     # click_link 'Google'
     # expect(page).to have_title('Google')

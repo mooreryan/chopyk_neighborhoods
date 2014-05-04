@@ -1,0 +1,18 @@
+<% provide(:title, 'Upload') %>
+<h1>Upload</h1>
+<p>Find me in app/views/neighborhoods/upload.html.erb</p>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@collapse) do |f| %>
+
+      <%= f.label :new_name %>
+      <%= f.text_field :new_name %>
+
+      <%= f.label :old_name %>
+      <%= f.text_field :old_name %>
+
+      <%= f.submit "Submit", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>

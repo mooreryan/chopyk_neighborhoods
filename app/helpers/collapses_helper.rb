@@ -1,0 +1,2 @@
+module CollapsesHelper
+end
