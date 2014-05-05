@@ -53,6 +53,12 @@ describe "NeighborhoodPages" do
     
     let(:search) { 'Search' }
 
+    describe 'when you first get to the page' do
+      it "shouldn't display no matches message" do
+        page.should_not have_content 'No matches!'
+      end
+    end
+
     describe 'with matching query' do
       before do
         fill_in 'Downstream', with: 'a'

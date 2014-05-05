@@ -12,9 +12,10 @@ h1 Search
   
 
 #table-container.table-container
-  - if @requested_contigs.to_a.empty?
+  - if @requested_contigs.to_a.empty? && !params[:down].nil? && \
+                                         !params[:up].nil?
     p No matches!
   - else
     - @requested_contigs.each do |info|
-      p = ">downstream-#{info.downstream}_upstream-#{info.upstream}" + \
-          "_contig-#{info.contig}\n#{info.sequence}"
+      p = ">downstream=#{info.downstream}_upstream=#{info.upstream}" + \
+          "_contig=#{info.contig}\n#{info.sequence}"
