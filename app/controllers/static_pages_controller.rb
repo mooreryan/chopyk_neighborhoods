@@ -1,6 +1,6 @@
 class StaticPagesController < ApplicationController
   def home
-  	@collapse = Collapse.new
+    @collapse = Collapse.new
   end
 
   def help
