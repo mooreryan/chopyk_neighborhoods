@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get 'interactions/new'
+
+  get 'arrangement/new'
+
+  get 'arrangement_dists/new'
+
   get 'collapses/new'
 
   resources :collapses

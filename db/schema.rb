@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140504032455) do
+ActiveRecord::Schema.define(version: 20140505040350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(version: 20140504032455) do
 
   add_index "collapses", ["old_name"], name: "index_collapses_on_old_name", unique: true, using: :btree
 
+  create_table "interactions", force: true do |t|
+    t.string   "downstream"
+    t.string   "upstream"
+    t.integer  "distance"
+    t.string   "contig"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "names", force: true do |t|
     t.string   "contig_name"
     t.string   "orf_name"
@@ -34,7 +43,7 @@ ActiveRecord::Schema.define(version: 20140504032455) do
 
   create_table "sequences", force: true do |t|
     t.string   "header"
-    t.string   "sequence"
+    t.text     "sequence"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
