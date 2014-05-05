@@ -1,6 +1,10 @@
 - provide :title, 'Search'
 h1 Search
 
+#search-dropdown.search-dropdown
+  = select_tag :downstream_box, options_for_select(@down_names), include_blank: true
+  = select_tag :upstream_box, options_for_select(@up_names), include_blank: true
+
 #search-container.search-container
   = form_tag(controller: 'neighborhoods', action: 'search', 
              method: 'get', class: 'nifty-form', remote: true)
