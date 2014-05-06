@@ -61,8 +61,10 @@ describe "NeighborhoodPages" do
 
     describe 'with matching query' do
       before do
-        fill_in 'Downstream', with: 'a'
-        fill_in 'Upstream', with: 'e'
+        # fill_in 'Downstream', with: 'a'
+        # fill_in 'Upstream', with: 'e'
+        select 'a', from: 'Downstream'
+        select 'e', from: 'Upstream'
       end
 
       it 'it should have a table with the matching data' do
@@ -74,8 +76,10 @@ describe "NeighborhoodPages" do
 
     describe "with query that doesn't match" do
       before do
-        fill_in 'Downstream', with: 'apple'
-        fill_in 'Upstream',   with: 'pie'
+        # fill_in 'Downstream', with: 'apple'
+        # fill_in 'Upstream',   with: 'pie'
+        select 'd', from: 'Downstream'
+        select 'a', from: 'Upstream'
       end
 
       it "shouldn't have any info in the table" do
