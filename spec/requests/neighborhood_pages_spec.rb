@@ -33,21 +33,8 @@ describe "NeighborhoodPages" do
 
   describe 'neighborhood search page' do
     before do 
-      # create the interaction entries
-      File.open('spec/test_files/interactions.txt', 'r').each_line do |line|
-        down, up, dist, cont = line.chomp.split("\t")
-
-        Interaction.create(downstream: down, upstream: up, distance: dist, contig: cont)
-      end
-      
-      # create the sequence entries
-      File.open('spec/test_files/contigs.fasta', 'r').each(sep="\n>") do |line|
-        header, sequence = line.chomp.split( "\n", 2 )
-          .map { |x| x.gsub( /\n|>/, '' ) }
-        
-        Sequence.create(header: header, sequence: sequence)
-      end
-      
+      create_interaction_entries
+      create_sequence_entries
       visit search_path
     end
     
