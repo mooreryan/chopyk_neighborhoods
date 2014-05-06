@@ -19,12 +19,9 @@ h1 Search
 /     = text_field_tag :up
 /     = submit_tag 'Search'
   
-
 #table-container.table-container
   - if @requested_contigs.to_a.empty? && !params[:down].nil? && \
                                          !params[:up].nil?
     p No matches!
   - else
-    - @requested_contigs.each do |info|
-      p = ">downstream=#{info.downstream}_upstream=#{info.upstream}" + \
-          "_contig=#{info.contig}\n#{info.sequence}"
+    = render 'neighborhoods/retrieved_contigs'

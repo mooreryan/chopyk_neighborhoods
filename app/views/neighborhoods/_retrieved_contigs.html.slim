@@ -1,0 +1,6 @@
+.contigs
+  h4 Retrieved contigs
+  - @requested_contigs.each do |info|
+    p = ">downstream=#{info.downstream}_upstream=#{info.upstream}" + \
+        "_contig=#{info.contig}\n#{info.sequence}"
+

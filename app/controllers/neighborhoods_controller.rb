@@ -1,10 +1,15 @@
+require 'securerandom'
+
 class NeighborhoodsController < ApplicationController
+
+
   def upload
     @collapse = Collapse.new
   end
 
   # should move this to model
   def search
+    
     select_string = 'interactions.downstream, interactions.upstream, ' +
       'interactions.distance, interactions.contig, sequences.sequence'
     join_string = 'inner join sequences on interactions.contig = ' + 
@@ -25,9 +30,19 @@ class NeighborhoodsController < ApplicationController
 
     @up_names = Interaction.select(:upstream).distinct.to_a.map { |r| [r.upstream, r.upstream] }.sort
 
-    @apple = params
+    # if @requested_contigs.to_a.count > 0
+    #   @contigs_file = 'public/contigs_' + Time.now.strftime("%Y%m%d%H%M%S%L") + 
+    #     SecureRandom.base64(40).gsub(/[=+$\/]/,'') + '.fasta'
 
-
+    #   # should find a better way to ensure that two users don't blow up
+    #   # each others file?
+    #   File.open(@contigs_file, 'w') do |f|
+    #     @requested_contigs.each do |info|
+    #       f.puts(">downstream=#{info.downstream}_upstream=#{info.upstream}" +
+    #              "_contig=#{info.contig}\n#{info.sequence}")
+    #     end
+    #   end
+    # end
   end
-
 end
+

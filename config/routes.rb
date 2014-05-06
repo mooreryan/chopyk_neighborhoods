@@ -16,11 +16,12 @@ Rails.application.routes.draw do
   root 'static_pages#home'
 
   # this also gives named routes like help_path
-  match '/help',    to: 'static_pages#help',    via: :get
-  match '/about',   to: 'static_pages#about',   via: :get
-  match '/contact', to: 'static_pages#contact', via: :get
-  match '/search',  to: 'neighborhoods#search', via: [:get, :post]
-  match '/upload',  to: 'neighborhoods#upload', via: :get
+  match '/help',            to: 'static_pages#help',      via: :get
+  match '/about',           to: 'static_pages#about',     via: :get
+  match '/contact',         to: 'static_pages#contact',   via: :get
+  match '/search',          to: 'neighborhoods#search',   via: [:get, :post]
+  # match '/search/download',          to: 'neighborhoods#download',   via: [:get, :post]
+  match '/upload',          to: 'neighborhoods#upload',   via: :get
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
