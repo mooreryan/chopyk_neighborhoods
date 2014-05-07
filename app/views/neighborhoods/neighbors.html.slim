@@ -1,0 +1,24 @@
+- provide :title, 'Neighbors'
+h1 Neighbors
+
+#options.select_area
+  / maybe this should actually point to the interaction page?
+  = form_tag(controller: 'neighborhoods', action: 'neighbors', 
+             method: 'get', class: 'nifty_form', remote: true)
+    = label_tag :collapse, 'Collapse with...'
+    = select_tag(:collapse, 
+                 options_for_select(['happy_fam', 'cute_fam', 
+                   'sassy_fam']),
+                 include_blank: true)
+
+    = label_tag :filter, 'Filter names?'
+    = radio_button_tag :filter, 'yes'
+    = label_tag :filter_yes, 'Yes'
+    = radio_button_tag :filter, 'no'
+    = label_tag :filter_no, 'No'
+
+    = label_tag :min, 'Min. # of interactions'
+    = select_tag(:min, options_for_select(1..5), include_blank: true)
+
+    = submit_tag 'Submit'
+

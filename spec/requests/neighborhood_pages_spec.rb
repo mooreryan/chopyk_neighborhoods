@@ -8,7 +8,11 @@ describe "NeighborhoodPages" do
     before { visit neighbors_path }
 
     it { should have_content 'Neighbors' }
-    it { should have_title(full_title('Upload')) }
+    it { should have_title(full_title('Neighbors')) }
+
+    let(:submit) { 'Submit' }
+
+    it { pending 'Should return matching neighborhoods' }
   end
 
   describe 'upload page' do

@@ -12,18 +12,17 @@ Rails.application.routes.draw do
   resources :collapses
   # resources :interactions
 
-  get 'neighborhoods/upload'
-
   root 'static_pages#home'
 
   # this also gives named routes like help_path
-  match '/help',            to: 'static_pages#help',      via: :get
-  match '/about',           to: 'static_pages#about',     via: :get
-  match '/contact',         to: 'static_pages#contact',   via: :get
-  match '/search',          to: 'neighborhoods#search',   via: [:get, :post]
-  # match '/search/download',          to: 'neighborhoods#download',   via: [:get, :post]
-  match '/upload',          to: 'neighborhoods#upload',   via: :get
-  # match '/list',            to: 'interactions#index',     via: :get
+  match '/help',      to: 'static_pages#help',       via: :get
+  match '/about',     to: 'static_pages#about',      via: :get
+  match '/contact',   to: 'static_pages#contact',    via: :get
+  # need the post for the form submit button
+  match '/search',    to: 'neighborhoods#search',    via: [:get, :post]
+  match '/upload',    to: 'neighborhoods#upload',    via: :get
+  match '/neighbors', to: 'neighborhoods#neighbors', via: [:get, :post]
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
