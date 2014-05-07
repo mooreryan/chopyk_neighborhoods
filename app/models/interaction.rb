@@ -1,3 +1,80 @@
+require 'set'
+
+def filter_count interaction_counts, *count
+  if count.nil? || count.empty?
+    interaction_counts
+  else
+    interaction_counts.select do |i|
+      i.last >= count.first.to_i
+    end
+  end    
+end    
+
+def filter_names interactions, name
+  interactions.select do |i|
+    i.downstream == name || i.upstream == name
+  end
+end
+
+def map_me old_name, new_name, collapse_these
+  if collapse_these.nil?
+    old_name
+  elsif collapse_these.include? old_name
+    new_name
+  else
+    old_name
+  end
+end
+
+def count_interactions interactions
+  counts = {}    
+  # consider having it always accept an array
+  if interactions.class == Array
+    interactions.each do |i|
+      the_key = [i.downstream, i.upstream]
+      
+      if counts[the_key].nil?
+        counts[the_key] = 1
+      else
+        counts[the_key] += 1
+      end
+    end
+  else
+    # is there a more ruby-ish way to do this?
+    interactions = interactions.select(:downstream, :upstream)
+    interactions.distinct.each do |i| 
+      counts[[i.downstream, i.upstream]] = 0 # seed starting counts
+    end
+    
+    interactions.each do |i|
+      counts[[i.downstream, i.upstream]] += 1
+    end
+  end
+  
+  return counts.sort_by { |k,v| v }.reverse
+end
+
+def collapse_names interactions, collapse
+  # handle when nil
+  
+  # eventually populate this from database
+  name_map = { happy_fam: Set.new(%w[a b]),
+    cute_fam:  Set.new(%w[c d e]),
+    sassy_fam: Set.new(%w[e]) }
+
+  collapse_these = name_map[collapse.to_sym]
+
+  interactions.each do |i|
+    new_downstream = map_me(i.downstream, collapse, collapse_these)
+    new_upstream = map_me(i.upstream, collapse, collapse_these)
+
+    i.downstream = new_downstream
+    i.upstream = new_upstream      
+  end
+  
+  return interactions
+end
+
 class Interaction < ActiveRecord::Base
   validates :downstream, presence: true
   validates :upstream, presence: true
@@ -13,11 +90,11 @@ class Interaction < ActiveRecord::Base
     interactions = Interaction.select(select_string)
       .joins(join_string)
       .where(interactions: { downstream: down,
-                             upstream: up })
+               upstream: up })
 
     interactions.map do |r| 
       ">downstream=#{r.downstream}_upstream=#{r.upstream}" +
-      "_contig=#{r.contig}\n#{r.sequence}" 
+        "_contig=#{r.contig}\n#{r.sequence}" 
     end
   end
 
@@ -32,7 +109,18 @@ class Interaction < ActiveRecord::Base
       [r.upstream, r.upstream] }.sort
   end
 
-  # def self.to_fasta
-  #   puts ">#{self.header}\n#{self.sequence}"
-  # end
+  # opts takes :collapse, and :min as options
+  def Interaction.collapsed_interactions opts
+    if opts[:collapse].nil? || opts[:collapse].empty?
+      filter_count(count_interactions(Interaction.all), 
+                   opts[:min])
+    else 
+      interactions = collapse_names(Interaction.all, opts[:collapse])
+      interactions = filter_names(interactions, 
+                                  opts[:collapse])
+      interaction_counts = count_interactions(interactions)
+      interaction_counts = filter_count(interaction_counts,
+                                        opts[:min])
+    end
+  end
 end

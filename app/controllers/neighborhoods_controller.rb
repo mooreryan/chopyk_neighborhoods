@@ -39,7 +39,9 @@ class NeighborhoodsController < ApplicationController
   end
 
   def neighbors
-
+    @interaction_counts = 
+      Interaction.collapsed_interactions(collapse: params[:collapse],
+                                         min: params[:min])
   end
 end
 

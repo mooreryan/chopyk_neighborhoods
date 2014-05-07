@@ -4,10 +4,19 @@ describe Interaction do
   before do 
     Interaction.create!(downstream: 'a', upstream: 'e', 
                         distance: 1, contig: 'seq1')
-    Interaction.create!(downstream: 'a', upstream: 'b', 
-                        distance: 0, contig: 'seq1')
     Interaction.create!(downstream: 'a', upstream: 'e', 
                         distance: 0, contig: 'seq2')
+    Interaction.create!(downstream: 'a', upstream: 'e', 
+                        distance: 0, contig: 'seq3')
+    Interaction.create!(downstream: 'a', upstream: 'b', 
+                        distance: 0, contig: 'seq1')
+    Interaction.create!(downstream: 'a', upstream: 'b', 
+                        distance: 2, contig: 'seq4')
+    Interaction.create!(downstream: 'c', upstream: 'd', 
+                        distance: 2, contig: 'seq3')
+    Interaction.create!(downstream: 'b', upstream: 'a', 
+                        distance: 2, contig: 'seq5')
+
  
     Sequence.create! header: 'seq1', sequence: 'AAATCGACT'
     Sequence.create! header: 'seq2', sequence: 'GTGTTGAC'
@@ -15,22 +24,27 @@ describe Interaction do
     @interaction = Interaction.first
   end
 
-  describe 'filter contigs' do
-    describe 'with successful search' do
-      it 'should return the right number of records' do
-        filtered_contigs = Interaction.filter_contigs 'a', 'e'
-        expect(filtered_contigs.length).to be 2
-      end
+  describe 'collapsed_interactions' do 
+    describe 'with collapse, and min number specified' do
+      it 'returns the proper records' do
+        collapsed = 
+          Interaction.collapsed_interactions(collapse: 'sassy_fam',
+                                             min: 2)
+        # sassy_fam collapses 'e' to sassy_fam
+        expect(collapsed).to(eq([[['a', 'sassy_fam'], 3]]))
+      end      
     end
 
-    describe 'with failing search' do
-      it 'should return an empty thing' do
-        filtered_contigs = Interaction.filter_contigs 'a', 'q'
-        expect(filtered_contigs.length).to be 0
+    describe 'with just the min number specified' do
+      it 'returns the proper records' do
+        collapsed = 
+          Interaction.collapsed_interactions(min: 2)
+
+        expect(collapsed).to(eq([[['a', 'e'], 3],
+                                 [['a', 'b'], 2]]))
       end
     end
   end
-
   
   subject { @interaction }
 

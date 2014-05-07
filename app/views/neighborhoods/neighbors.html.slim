@@ -11,14 +11,15 @@ h1 Neighbors
                    'sassy_fam']),
                  include_blank: true)
 
-    = label_tag :filter, 'Filter names?'
-    = radio_button_tag :filter, 'yes'
-    = label_tag :filter_yes, 'Yes'
-    = radio_button_tag :filter, 'no'
-    = label_tag :filter_no, 'No'
-
     = label_tag :min, 'Min. # of interactions'
-    = select_tag(:min, options_for_select(1..5), include_blank: true)
+    = select_tag(:min, options_for_select(2..5), include_blank: true)
 
     = submit_tag 'Submit'
 
+
+#results
+  - if @interaction_counts.empty?
+    p No results!
+  - else
+    - @interaction_counts.each do |i|
+      p = i
