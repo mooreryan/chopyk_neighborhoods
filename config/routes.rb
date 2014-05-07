@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'collapses/new'
 
   resources :collapses
+  # resources :interactions
 
   get 'neighborhoods/upload'
 
@@ -22,6 +23,7 @@ Rails.application.routes.draw do
   match '/search',          to: 'neighborhoods#search',   via: [:get, :post]
   # match '/search/download',          to: 'neighborhoods#download',   via: [:get, :post]
   match '/upload',          to: 'neighborhoods#upload',   via: :get
+  # match '/list',            to: 'interactions#index',     via: :get
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

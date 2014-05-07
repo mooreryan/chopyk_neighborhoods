@@ -6,8 +6,8 @@ class CollapsesController < ApplicationController
   end
   
   def create
-    # this is an ugly hack, should pass the collapse_params function
-    # below but not working right now
+    # TODO this is an ugly hack, should pass the collapse_params
+    # function below but not working right now
     @collapse = Collapse.new({ old_name: params['collapse']['old_name'], 
                                new_name: params['collapse']['new_name'] })
     puts "pipi #{params.inspect}"

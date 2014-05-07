@@ -1,19 +1,18 @@
 require 'securerandom'
 
 class NeighborhoodsController < ApplicationController
-
-
+  # here is a hack to keep track of the last search which is needed
+  # for download
+  @@last_down = ''
+  @@last_up = ''
+  
   def upload
     @collapse = Collapse.new
   end
 
   # should move this to model
   def search
-    
 
-    # test the sql
-    @requested_contigs = Interaction.filter_contigs(params[:down], 
-                                                    params[:up])
 
     # test
     # @interactions = Interaction.select(:downstream, :upstream)
@@ -37,6 +36,25 @@ class NeighborhoodsController < ApplicationController
     #     end
     #   end
     # end
+
+    @requested_contigs = 
+      Interaction.filter_contigs(params[:down], params[:up])
+
+    respond_to do |format|
+      format.html
+      
+      # okay so it's doing this query tice if it calls a fasta and
+      # using class variables...ugly! but at least it works
+      format.fasta do
+        s = ''
+        Interaction.filter_contigs(@@last_down, @@last_up).each { |st| s << st + "\n" }
+        send_data s
+      end
+    end    
+
+    @@last_down = params[:down]
+    @@last_up   = params[:up]
+
   end
 end
 

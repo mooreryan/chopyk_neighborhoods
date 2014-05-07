@@ -1,6 +1,8 @@
 .contigs
+  / TODO this always shows up (the h4)
   h4 Retrieved contigs
+  / when you hit this link, it redoes everything in the search action,
+  / but the default values are null, so it sends empty data
+  = link_to 'Download contigs', search_path(format: 'fasta')
   - @requested_contigs.each do |info|
-    p = ">downstream=#{info.downstream}_upstream=#{info.upstream}" + \
-        "_contig=#{info.contig}\n#{info.sequence}"
-
+    p = info

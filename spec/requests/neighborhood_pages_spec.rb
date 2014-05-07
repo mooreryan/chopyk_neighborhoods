@@ -40,6 +40,12 @@ describe "NeighborhoodPages" do
     
     let(:search) { 'Search' }
 
+    describe 'it responds to multiple things' do
+      it 'responds to .txt format' do
+        pending 'Test that it responds to .txt format'
+      end
+    end
+
     describe 'when you first get to the page' do
       it "shouldn't display no matches message" do
         page.should_not have_content 'No matches!'

@@ -10,10 +10,15 @@ class Interaction < ActiveRecord::Base
     join_string = 'inner join sequences on interactions.contig = ' + 
       'sequences.header'
 
-    Interaction.select(select_string)
+    interactions = Interaction.select(select_string)
       .joins(join_string)
       .where(interactions: { downstream: down,
                              upstream: up })
+
+    interactions.map do |r| 
+      ">downstream=#{r.downstream}_upstream=#{r.upstream}" +
+      "_contig=#{r.contig}\n#{r.sequence}" 
+    end
   end
 
   # TODO consider macro for this
@@ -26,4 +31,8 @@ class Interaction < ActiveRecord::Base
     Interaction.select(:upstream).distinct.map { |r|
       [r.upstream, r.upstream] }.sort
   end
+
+  # def self.to_fasta
+  #   puts ">#{self.header}\n#{self.sequence}"
+  # end
 end
