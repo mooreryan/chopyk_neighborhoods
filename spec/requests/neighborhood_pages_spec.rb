@@ -4,6 +4,13 @@ describe "NeighborhoodPages" do
 
   subject { page }
 
+  describe 'neighbors page' do
+    before { visit neighbors_path }
+
+    it { should have_content 'Neighbors' }
+    it { should have_title(full_title('Upload')) }
+  end
+
   describe 'upload page' do
     before { visit upload_path }
 
