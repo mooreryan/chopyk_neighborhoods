@@ -1,0 +1,7 @@
+- provide :title, 'Contigs'
+h1 Contigs
+
+= link_to 'Download contigs', contigs_path(format: 'fasta')
+p = p @contigs
+- @contigs.each do |info|
+  p = info

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   match '/search',    to: 'neighborhoods#search',    via: [:get, :post]
   match '/upload',    to: 'neighborhoods#upload',    via: :get
   match '/neighbors', to: 'neighborhoods#neighbors', via: [:get, :post]
+  match '/contigs',   to: 'neighborhoods#contigs',   via: [:get, :post]
 
 
   # The priority is based upon order of creation: first created -> highest priority.

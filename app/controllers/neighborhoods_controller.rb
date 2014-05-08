@@ -43,5 +43,20 @@ class NeighborhoodsController < ApplicationController
       Interaction.collapsed_interactions(collapse: params[:collapse],
                                          min: params[:min])
   end
+
+  def contigs
+    @contigs = 
+      params.select { |k,v| v == '1' }.map do |k,v|
+      s = ''
+      Interaction.filter_contigs(k.first, k.last).each do |st|
+        s << st + "\n"
+      end
+      s
+    end
+
+    send_data @contigs.join, filename: 'reads.fasta'
+  end
 end
+
+
 

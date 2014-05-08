@@ -1,12 +1,6 @@
 - provide :title, 'Search'
 h1 Search
 
-/ TODO: consider...making this form link to the InteractionsController
-/ search page, where it will filter the interactions data based on
-/ your selections, then it will specify an extra format to which it
-/ responds (txt) which will get a block that says send the data, which
-/ should work
-
 #search-dropdown.search-dropdown
   = form_tag(controller: 'neighborhoods', action: 'search', 
              method: 'get', class: 'nifty-form', remote: true)
@@ -16,15 +10,6 @@ h1 Search
     = select_tag :up, options_for_select(@up_names), include_blank: true
     = submit_tag 'Search'
 
-/ #search-container.search-container
-/   = form_tag(controller: 'neighborhoods', action: 'search', 
-/              method: 'get', class: 'nifty-form', remote: true)
-/     = label_tag :down, 'Downstream'
-/     = text_field_tag :down
-/     = label_tag :up, 'Upstream'
-/     = text_field_tag :up
-/     = submit_tag 'Search'
-  
 #table-container.table-container
   - if params[:down].nil? && params[:up].nil?
     / print nothing, you just arrived

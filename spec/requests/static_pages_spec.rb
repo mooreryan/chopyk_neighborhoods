@@ -16,7 +16,7 @@ describe "Static pages" do
     click_link 'Contact'
     expect(page).to have_title(full_title('Contact'))
 
-    click_link 'Chopyk Neighborhoods'
+    click_link 'ChopBot 3000'
     expect(page).to have_title(full_title(''))
 
     # check the other way to get home
@@ -44,7 +44,7 @@ describe "Static pages" do
 
   describe "Home page" do
     before { visit root_path }
-    let(:heading) { 'Chopyk Neighborhoods' }
+    let(:heading) { 'ChopBot 3000' }
     let(:page_title) { '' }
 
     it_should_behave_like 'all static pages'
