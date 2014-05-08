@@ -45,6 +45,10 @@ describe Interaction do
       end
     end
   end
+
+  describe 'filter_contigs' do 
+    it { pending 'needs to be tested' }
+  end
   
   subject { @interaction }
 

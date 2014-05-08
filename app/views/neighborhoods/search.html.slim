@@ -11,7 +11,7 @@ h1 Search
     = submit_tag 'Search'
 
 #table-container.table-container
-  - if params[:down].nil? && params[:up].nil?
+  - if params[:down].nil? || params[:up].nil?
     / print nothing, you just arrived
   - elsif @requested_contigs.to_a.empty?                              
     p No matches!

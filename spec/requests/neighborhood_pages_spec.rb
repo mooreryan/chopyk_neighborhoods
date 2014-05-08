@@ -16,15 +16,6 @@ describe "NeighborhoodPages" do
     it { pending 'Should take you to the contigs page' }
   end
 
-  describe 'contigs page' do
-    before { visit contigs_path }
-
-    it { should have_content 'Contigs' }
-    it { should have_title(full_title('Contigs')) }
-
-    it { pending 'Shows the contigs you requested' }
-  end
-
   describe 'upload page' do
     before { visit upload_path }
 

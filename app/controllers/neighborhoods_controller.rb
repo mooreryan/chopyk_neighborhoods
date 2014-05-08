@@ -17,8 +17,10 @@ class NeighborhoodsController < ApplicationController
 
     @up_names = Interaction.dropdown_upstream
 
-    @requested_contigs = 
-      Interaction.filter_contigs(params[:down], params[:up])
+    unless params[:down].nil? || params[:up].nil?
+      @requested_contigs = 
+        Interaction.filter_contigs(params[:down], params[:up])
+    end
 
     respond_to do |format|
       format.html
@@ -48,7 +50,8 @@ class NeighborhoodsController < ApplicationController
     @contigs = 
       params.select { |k,v| v == '1' }.map do |k,v|
       s = ''
-      Interaction.filter_contigs(k.first, k.last).each do |st|
+      down, up = k.split(',')
+      Interaction.filter_contigs(down, up).each do |st|
         s << st + "\n"
       end
       s
@@ -57,6 +60,3 @@ class NeighborhoodsController < ApplicationController
     send_data @contigs.join, filename: 'reads.fasta'
   end
 end
-
-
-
