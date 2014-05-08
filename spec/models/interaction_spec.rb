@@ -20,6 +20,17 @@ describe Interaction do
  
     Sequence.create! header: 'seq1', sequence: 'AAATCGACT'
     Sequence.create! header: 'seq2', sequence: 'GTGTTGAC'
+
+    Collapse.create(new_name: 'DNA_POL_FAMILY',
+                    old_name: 'dna_pol_a')
+    Collapse.create(new_name: 'SILLY_FAMILY',
+                    old_name: 'a')
+    Collapse.create(new_name: 'SILLY_FAMILY',
+                    old_name: 'g')
+    Collapse.create(new_name: 'SASSY_FAMILY',
+                    old_name: 'b')
+    Collapse.create(new_name: 'SASSY_FAMILY',
+                    old_name: 'c')
     
     @interaction = Interaction.first
   end
@@ -28,10 +39,11 @@ describe Interaction do
     describe 'with collapse, and min number specified' do
       it 'returns the proper records' do
         collapsed = 
-          Interaction.collapsed_interactions(collapse: 'sassy_fam',
+          Interaction.collapsed_interactions(collapse: 'SILLY_FAMILY',
                                              min: 2)
         # sassy_fam collapses 'e' to sassy_fam
-        expect(collapsed).to(eq([[['a', 'sassy_fam'], 3]]))
+        expect(collapsed).to(eq([[['SILLY_FAMILY', 'e'], 3], 
+                                 [['SILLY_FAMILY', 'b'], 2]]))
       end      
     end
 

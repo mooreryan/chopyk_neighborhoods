@@ -34,12 +34,7 @@ end
 # with unmatching name
 # unmap_me('apples') :=> ['apples']
 #
-def unmap_me name
-  # eventually populate this from database
-  name_map = { happy_fam: %w[a b],
-    cute_fam:  %w[c d e],
-    sassy_fam: %w[e] }
-
+def unmap_me name, name_map
   if name_map.has_key? name.to_sym
     name_map[name.to_sym]
   else
@@ -75,14 +70,7 @@ def count_interactions interactions
   return counts.sort_by { |k,v| v }.reverse
 end
 
-def collapse_names interactions, collapse
-  # handle when nil
-  
-  # eventually populate this from database
-  name_map = { happy_fam: Set.new(%w[a b]),
-    cute_fam:  Set.new(%w[c d e]),
-    sassy_fam: Set.new(%w[e]) }
-
+def collapse_names interactions, collapse, name_map
   collapse_these = name_map[collapse.to_sym]
 
   interactions.each do |i|
@@ -110,8 +98,9 @@ class Interaction < ActiveRecord::Base
     join_string = 'inner join sequences on interactions.contig = ' + 
       'sequences.header'
 
-    down = unmap_me down
-    up = unmap_me up
+    name_map = Collapse.family_map
+    down = unmap_me down, name_map
+    up = unmap_me up, name_map
     
     contigs = []
 
@@ -143,11 +132,14 @@ class Interaction < ActiveRecord::Base
 
   # opts takes :collapse, and :min as options
   def Interaction.collapsed_interactions opts
+    name_map = Collapse.family_map
+    
     if opts[:collapse].nil? || opts[:collapse].empty?
       filter_count(count_interactions(Interaction.all), 
                    opts[:min])
     else 
-      interactions = collapse_names(Interaction.all, opts[:collapse])
+      interactions = collapse_names(Interaction.all, opts[:collapse],
+                                    name_map)
       interactions = filter_names(interactions, 
                                   opts[:collapse])
       interaction_counts = count_interactions(interactions)

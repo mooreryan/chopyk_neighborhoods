@@ -7,8 +7,7 @@ h1 Neighbors
              method: 'get', class: 'nifty_form', remote: true)
     = label_tag :collapse, 'Collapse with...'
     = select_tag(:collapse, 
-                 options_for_select(['happy_fam', 'cute_fam', 
-                   'sassy_fam']),
+                 options_for_select(@families),
                  include_blank: true)
 
     = label_tag :min, 'Min. # of interactions'

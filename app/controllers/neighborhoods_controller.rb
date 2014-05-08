@@ -44,6 +44,8 @@ class NeighborhoodsController < ApplicationController
     @interaction_counts = 
       Interaction.collapsed_interactions(collapse: params[:collapse],
                                          min: params[:min])
+
+    @families = Collapse.unique_families
   end
 
   def contigs
