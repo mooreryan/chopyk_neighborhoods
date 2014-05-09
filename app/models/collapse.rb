@@ -1,6 +1,6 @@
 class Collapse < ActiveRecord::Base
   validates :new_name, presence: true
-  validates :old_name, presence: true, uniqueness: true
+  validates :old_name, presence: true
 
   def Collapse.unique_families
     Collapse.select(:new_name).distinct.map { |r| r.new_name }

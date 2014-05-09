@@ -50,15 +50,15 @@ describe Collapse do
     it { should_not be_valid }
   end
 
-  describe "when old_name is already taken" do
-    before do
-      @num_before_test = Collapse.all.length
-      collapse_with_same_old_name = @collapse.dup
-      collapse_with_same_old_name.save
-    end
+  # describe "when old_name is already taken" do
+  #   before do
+  #     @num_before_test = Collapse.all.length
+  #     collapse_with_same_old_name = @collapse.dup
+  #     collapse_with_same_old_name.save
+  #   end
 
-    it "it won't add an entry" do
-      expect(Collapse.all.length).to eq @num_before_test
-    end
-  end
+  #   it "it won't add an entry" do
+  #     expect(Collapse.all.length).to eq @num_before_test
+  #   end
+  # end
 end

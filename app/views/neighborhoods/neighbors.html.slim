@@ -20,19 +20,21 @@ h1 Neighbors
   - if @interaction_counts.empty?
     p No results!
   - else
-    = form_tag(controller: 'neighborhoods', action: 'contigs', 
-               method: 'get', class: 'nifty_form', remote: true)
-      table.scroll-table.sortable
-        tr.header-row
-          th Downstream
-          th Upstream
-          th Count
-          th Select?
-      tbody.scroll-content
-        - @interaction_counts.each do |i|
-          tr
-            td = i.first.first
-            td = i.first.last
-            td = i.last
-            td = check_box_tag("#{i.first.first},#{i.first.last}")
-      = submit_tag 'Get contigs'
+    .table-container
+      = form_tag(controller: 'neighborhoods', action: 'contigs', 
+                 method: 'get', class: 'nifty_form', remote: true)
+        table.scroll-table.sortable
+          thead.fixed-header
+            tr.header-row
+              th Downstream
+              th Upstream
+              th Count
+              th Select?
+          tbody.scroll-content
+            - @interaction_counts.each do |i|
+              tr
+                td = i.first.first
+                td = i.first.last
+                td = i.last
+                td = check_box_tag("#{i.first.first},#{i.first.last}")
+        = submit_tag 'Get contigs'

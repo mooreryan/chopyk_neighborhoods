@@ -133,12 +133,13 @@ class Interaction < ActiveRecord::Base
   # opts takes :collapse, and :min as options
   def Interaction.collapsed_interactions opts
     name_map = Collapse.family_map
+    all_interactions = Interaction.all
     
     if opts[:collapse].nil? || opts[:collapse].empty?
-      filter_count(count_interactions(Interaction.all), 
+      filter_count(count_interactions(all_interactions), 
                    opts[:min])
     else 
-      interactions = collapse_names(Interaction.all, opts[:collapse],
+      interactions = collapse_names(all_interactions, opts[:collapse],
                                     name_map)
       interactions = filter_names(interactions, 
                                   opts[:collapse])
