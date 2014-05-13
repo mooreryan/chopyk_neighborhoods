@@ -34,6 +34,33 @@ end
 # with unmatching name
 # unmap_me('apples') :=> ['apples']
 #
+
+def filter_uninformative_names interactions
+  bad_names = Set.new(%w[putative uncharacterized predicted_protein])
+  good_interactions = []
+
+  
+  interactions.each do |i|
+    bad = false
+    
+    bad_names.each do |name|
+      if i.downstream.match(name) || i.upstream.match(name)
+        bad = true
+        break
+      end
+    end
+
+    unless bad
+      good_interactions << i
+    end
+  end
+
+  return good_interactions
+end
+
+
+
+
 def unmap_me name, name_map
   if name_map.has_key? name.to_sym
     name_map[name.to_sym]
@@ -134,12 +161,14 @@ class Interaction < ActiveRecord::Base
   def Interaction.collapsed_interactions opts
     name_map = Collapse.family_map
     all_interactions = Interaction.all
+    good_interactions = filter_uninformative_names all_interactions
+    opts[:min] = '10' if opts[:min] = ''
     
     if opts[:collapse].nil? || opts[:collapse].empty?
-      filter_count(count_interactions(all_interactions), 
+      filter_count(count_interactions(good_interactions), 
                    opts[:min])
     else 
-      interactions = collapse_names(all_interactions, opts[:collapse],
+      interactions = collapse_names(good_interactions, opts[:collapse],
                                     name_map)
       interactions = filter_names(interactions, 
                                   opts[:collapse])

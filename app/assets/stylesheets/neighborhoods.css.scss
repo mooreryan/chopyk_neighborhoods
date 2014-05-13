@@ -2,51 +2,51 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-div.table-container {
-  clear: both;
-  height: 500px;
-  overflow:hidden;
-  margin-left: auto;
-  margin-right: auto;
+/* div.table-container { */
+/*   clear: both; */
+/*   height: 500px; */
+/*   overflow:hidden; */
+/*   margin-left: auto; */
+/*   margin-right: auto; */
   
-  table.scroll-table {
-    float: left;
-    height: 500px;
+/*   table.scroll-table { */
+/*     float: left; */
+/*     height: 500px; */
 
-    thead.fixed-header {
-      tr {
-	position: relative;
-	display: block;
-	color: #7F3D17;
-      }
+/*     thead.fixed-header { */
+/*       tr { */
+/* 	position: relative; */
+/* 	display: block; */
+/* 	color: #7F3D17; */
+/*       } */
 
-      th {
-	text-align: center;
-	width: 250px;
-	backgroud-color: #CBFFFA;
-      }
-    }
+/*       th { */
+/* 	text-align: center; */
+/* 	width: 250px; */
+/* 	backgroud-color: #CBFFFA; */
+/*       } */
+/*     } */
 
-    tbody.scroll-content {
-      display: block;
-      height: 400px;
-      overflow: auto;
-      width: 100%;
-      text-align: center;
+/*     tbody.scroll-content { */
+/*       display: block; */
+/*       height: 400px; */
+/*       overflow: auto; */
+/*       width: 100%; */
+/*       text-align: center; */
 
-      td {
-	width: 250px;
-      }
-    }
-  }
+/*       td { */
+/* 	width: 250px; */
+/*       } */
+/*     } */
+/*   } */
 
-  // stripe colors!
+/*   // stripe colors! */
 
-  /* table.tablesorter tbody tr:nth-child(2n) td { */
-  /*   background: #CBFFFA; */
-  /*   background: rgba(203,255,250,0.7); */
-  /* } */
-  /* table.tablesorter tbody tr:nth-child(2n+1) td { */
-  /*   background: white; */
-  /* } */
-}
+/*   table.tablesorter tbody tr:nth-child(2n) td { */
+/*     background: #CBFFFA; */
+/*     background: rgba(203,255,250,0.7); */
+/*   } */
+/*   table.tablesorter tbody tr:nth-child(2n+1) td { */
+/*     background: white; */
+/*   } */
+/* } */

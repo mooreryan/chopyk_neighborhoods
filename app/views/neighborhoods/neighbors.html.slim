@@ -11,7 +11,7 @@ h1 Neighbors
                  include_blank: true)
 
     = label_tag :min, 'Min. # of interactions'
-    = select_tag(:min, options_for_select(2..5), include_blank: true)
+    = select_tag(:min, options_for_select(10..25), include_blank: true)
 
     = submit_tag 'Submit'
 
