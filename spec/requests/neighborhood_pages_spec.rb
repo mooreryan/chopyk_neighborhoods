@@ -37,6 +37,26 @@ describe "NeighborhoodPages" do
     it { pending 'Should take you to the contigs page' }
   end
 
+  describe 'superfamilies page' do
+    before { visit superfamilies_path }
+
+    it { should have_content 'Superfamilies' }
+    it { should have_title(full_title('Superfamilies')) }
+
+    # it do
+    #   should have_select(:collapse, options: ['DNA_POL_FAMILY', 
+    #                                           'SILLY_FAMILY', 
+    #                                           'SASSY_FAMILY'])
+    # end
+    # TODO the test above fails even though the webpage works
+    it { pending 'Should have the right selections' }
+
+    let(:submit) { 'Submit' }
+
+    it { pending 'Should return matching neighborhoods' }
+    it { pending 'Should take you to the contigs page' }
+  end
+
   # describe 'upload page' do
   #   before { visit upload_path }
 

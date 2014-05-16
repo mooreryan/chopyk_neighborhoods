@@ -48,6 +48,7 @@ class NeighborhoodsController < ApplicationController
     @families = Collapse.unique_families
   end
 
+
   def contigs
     @contigs = 
       params.select { |k,v| v == '1' }.map do |k,v|
@@ -60,5 +61,29 @@ class NeighborhoodsController < ApplicationController
     end
 
     send_data @contigs.join, filename: 'reads.fasta'
+  end
+
+  def superfamilies
+    @interaction_counts = 
+      SuperfamilyInteraction
+      .collapsed_interactions(collapse: params[:collapse],
+                              min: params[:min])
+
+    @families = SuperfamilyInteraction.unique_families
+  end
+
+  def sfcontigs
+    @contigs = 
+      params.select { |k,v| v == '1' }.map do |k,v|
+      s = ''
+      down, up = k.split(',')
+      SuperfamilyInteraction.filter_contigs(down, up).each do |st|
+        s << st + "\n"
+      end
+      s
+    end
+
+    send_data @contigs.join, filename: 'reads.fasta'
+
   end
 end

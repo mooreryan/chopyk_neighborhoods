@@ -32,6 +32,10 @@ describe "Static pages" do
     click_link 'Neighbors'
     expect(page).to have_title(full_title('Neighbors'))
 
+    click_link 'Superfamilies'
+    expect(page).to have_title(full_title('Superfamilies'))
+
+
     # TODO: figure out how to check external links
     # click_link 'Google'
     # expect(page).to have_title('Google')

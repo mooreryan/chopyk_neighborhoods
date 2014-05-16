@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   match '/search',    to: 'neighborhoods#search',    via: [:get, :post]
   match '/upload',    to: 'neighborhoods#upload',    via: :get
   match '/neighbors', to: 'neighborhoods#neighbors', via: [:get, :post]
+  match( '/superfamilies', to: 'neighborhoods#superfamilies', 
+         via: [:get, :post] )
   match '/contigs',   to: 'neighborhoods#contigs',   via: [:get, :post]
 
 

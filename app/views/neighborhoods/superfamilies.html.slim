@@ -1,0 +1,40 @@
+- provide :title, 'Superfamilies'
+h1 Superfamilies
+
+#options.select_area
+  / maybe this should actually point to the interaction page?
+  = form_tag(controller: 'neighborhoods', action: 'superfamilies', 
+             method: 'get', class: 'nifty_form', remote: true)
+    = label_tag :collapse, 'Collapse with...'
+    = select_tag(:collapse, 
+                 options_for_select(@families),
+                 include_blank: true)
+
+    = label_tag :min, 'Min. # of interactions'
+    = select_tag(:min, options_for_select(1..10), include_blank: true)
+
+    = submit_tag 'Submit'
+
+#form-div
+  #table-div
+  - if @interaction_counts.empty?
+    p No results!
+  - else
+    .table-container
+      = form_tag(controller: 'neighborhoods', action: 'contigs', 
+                 method: 'get', class: 'nifty_form', remote: true)
+        table.scroll-table.sortable
+          thead.fixed-header
+            tr.header-row
+              th Downstream
+              th Upstream
+              th Count
+              th Select?
+          tbody.scroll-content
+            - @interaction_counts.each do |i|
+              tr
+                td = i.first.first
+                td = i.first.last
+                td = i.last
+                td = check_box_tag("#{i.first.first},#{i.first.last}")
+        = submit_tag 'Get contigs'

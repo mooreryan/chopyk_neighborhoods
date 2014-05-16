@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140509204035) do
+ActiveRecord::Schema.define(version: 20140515182636) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,5 +47,14 @@ ActiveRecord::Schema.define(version: 20140509204035) do
   end
 
   add_index "sequences", ["header"], name: "index_sequences_on_header", unique: true, using: :btree
+
+  create_table "superfamily_interactions", force: true do |t|
+    t.string   "downstream"
+    t.string   "upstream"
+    t.integer  "distance"
+    t.string   "contig"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end
