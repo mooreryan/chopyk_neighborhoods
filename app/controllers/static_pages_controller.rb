@@ -7,6 +7,7 @@ class StaticPagesController < ApplicationController
   end
 
   def about
+    gon.posns = 150, 150, 100
   end
 
   def contact
