@@ -21,7 +21,7 @@ h1 Superfamilies
     p No results!
   - else
     .table-container
-      = form_tag(controller: 'neighborhoods', action: 'contigs', 
+      = form_tag(controller: 'neighborhoods', action: 'sfcontigs', 
                  method: 'get', class: 'nifty_form', remote: true)
         table.scroll-table.sortable
           thead.fixed-header

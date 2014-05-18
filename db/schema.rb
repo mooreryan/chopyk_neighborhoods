@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140515182636) do
+ActiveRecord::Schema.define(version: 20140518215213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,9 +39,21 @@ ActiveRecord::Schema.define(version: 20140515182636) do
     t.datetime "updated_at"
   end
 
+  create_table "orf_infos", force: true do |t|
+    t.string   "name"
+    t.string   "superfam"
+    t.string   "contig"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "sequence_id"
+    t.text     "orf_sequence"
+  end
+
+  add_index "orf_infos", ["contig"], name: "index_orf_infos_on_contig", using: :btree
+
   create_table "sequences", force: true do |t|
     t.string   "header"
-    t.text     "sequence"
+    t.text     "contig"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -55,6 +67,7 @@ ActiveRecord::Schema.define(version: 20140515182636) do
     t.string   "contig"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sequence_id"
   end
 
 end

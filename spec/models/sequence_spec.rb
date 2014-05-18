@@ -1,9 +1,25 @@
 require 'spec_helper'
 
 describe Sequence do
-    before { @sequence = 
-    Sequence.new(sequence: 'ACTGACGTACTGCACATACGGCATGATCGATCG',
-                 header: 'my_funny_contig') }
+  before do 
+    @sequence = 
+      Sequence.create!(contig: 'ACTGACGTACTGCACATACGGCATGATCGATCG',
+                       header: 'my_funny_contig')
+
+    OrfInfo.create!(name: 'orf_23_452_1', superfam: 'applase', 
+                    contig: 'my_funny_contig')
+    OrfInfo.create!(name: 'orf_500_782_2', superfam: 'bobase', 
+                    contig: 'my_funny_contig')
+
+  end
+  
+  # describe '.get_associated_orfs' do
+  #   it 'gets the orfs associated with the sequence' do
+  #     p @sequence.header
+  #     expect(@sequence.get_associated_orfs).to eq OrfInfo.where(contig: @sequence.header)
+  #   end
+  # end
+
 
   subject { @sequence }
 

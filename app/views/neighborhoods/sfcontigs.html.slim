@@ -1,0 +1,21 @@
+- provide :title, 'Superfamily Contigs'
+h1 Superfamily Contigs
+
+.table-container
+  = form_tag(controller: 'neighborhoods', action: 'download_sfcontigs',
+             method: 'get', class: 'nifty_form')
+    table.scroll-table.sortable
+      thead.fixed-header
+        tr.header-row
+          th Pretty pics
+          th Select?
+      tbody.scroll-content
+        - @orfs.each do |info|
+          tr
+            td = content_tag(:div, content_tag(:svg, nil, id: info[:contig],
+              width: '800', height: '400'),
+              class: 'svg-container')
+            td = check_box_tag("#{info[:contig]},#{info[:orfs].map { |o| o.last }.join(',')}")
+    = submit_tag 'Download'
+
+

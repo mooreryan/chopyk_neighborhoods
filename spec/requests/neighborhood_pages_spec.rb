@@ -17,6 +17,15 @@ describe "NeighborhoodPages" do
 
   subject { page }
 
+  describe 'sfcontigs html page' do 
+    before { visit sfcontigs_path }
+
+    it { should have_content 'Superfamily Contigs' }
+    it { should have_title(full_title('Superfamily Contigs')) }
+
+    it { pending 'should have a download link' }
+  end
+
   describe 'neighbors page' do
     before { visit neighbors_path }
 

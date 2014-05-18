@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   match( '/superfamilies', to: 'neighborhoods#superfamilies', 
          via: [:get, :post] )
   match '/contigs',   to: 'neighborhoods#contigs',   via: [:get, :post]
+  match '/sfcontigs',   to: 'neighborhoods#sfcontigs',   via: [:get, :post]
+  match '/download_sfcontigs',   to: 'neighborhoods#download_sfcontigs',   via: [:get, :post]
 
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -113,6 +113,8 @@ end
 
 
 class SuperfamilyInteraction < ActiveRecord::Base
+  belongs_to :sequence
+
   validates :downstream, presence: true
   validates :upstream, presence: true
   validates :distance, presence: true
@@ -121,77 +123,73 @@ class SuperfamilyInteraction < ActiveRecord::Base
 
   # not tested
   def SuperfamilyInteraction.filter_contigs down, up
-    select_string = 'interactions.downstream, interactions.upstream, ' +
-      'interactions.distance, interactions.contig, sequences.sequence'
-    join_string = 'inner join sequences on interactions.contig = ' + 
-      'sequences.header'
+    select_string = 'superfamily_interactions.downstream, ' + 
+      'superfamily_interactions.upstream, ' +
+      'superfamily_interactions.distance, ' + 
+      'sequences.header, sequences.contig'
+    join_string = 'inner join sequences on ' + 
+      'superfamily_interactions.contig = sequences.header'
 
-    name_map = Collapse.family_map
-    down = unmap_me down, name_map
-    up = unmap_me up, name_map
+    interactions = SuperfamilyInteraction.select(select_string)
+      .joins(join_string)
+      .where(superfamily_interactions: { downstream: down, 
+               upstream: up } )
     
-    contigs = []
+    # contigs = interactions.map do |r| 
+    #   ">downstream=#{r.downstream}_upstream=#{r.upstream}" +
+    #     "_contig=#{r.header}\n#{r.contig}" 
+    # end
+    # return contigs
 
-    down.product(up).each do |d, u|
-      interactions = SuperfamilyInteraction.select(select_string)
-        .joins(join_string)
-        .where(interactions: { downstream: d,
-                 upstream: u })
-
-      contigs << interactions.map do |r| 
-        ">downstream=#{r.downstream}_upstream=#{r.upstream}" +
-          "_contig=#{r.contig}\n#{r.sequence}" 
-      end
-    end
-
-    contigs.flatten
+    return interactions
   end
+end
 
-  # TODO consider macro for this
-  def SuperfamilyInteraction.dropdown_downstream
-    SuperfamilyInteraction.select(:downstream).distinct.map { |r|
-      [r.downstream, r.downstream] }.sort
+# TODO consider macro for this
+def SuperfamilyInteraction.dropdown_downstream
+  SuperfamilyInteraction.select(:downstream).distinct.map { |r|
+    [r.downstream, r.downstream] }.sort
+end
+
+def SuperfamilyInteraction.dropdown_upstream
+  SuperfamilyInteraction.select(:upstream).distinct.map { |r|
+    [r.upstream, r.upstream] }.sort
+end
+
+# opts takes :collapse, and :min as options
+def SuperfamilyInteraction.collapsed_interactions opts
+  name_map = Collapse.family_map
+  all_interactions = SuperfamilyInteraction.all
+  good_interactions = filter_uninformative_names all_interactions
+  opts[:min] = '2' if opts[:min] = ''
+  
+  if opts[:collapse].nil? || opts[:collapse].empty?
+    filter_count(count_interactions(good_interactions), 
+                 opts[:min])
+  else 
+    interactions = collapse_names(good_interactions, opts[:collapse],
+                                  name_map)
+    interactions = filter_names(interactions, 
+                                opts[:collapse])
+    interaction_counts = count_interactions(interactions)
+    interaction_counts = filter_count(interaction_counts,
+                                      opts[:min])
   end
+end
 
-  def SuperfamilyInteraction.dropdown_upstream
-    SuperfamilyInteraction.select(:upstream).distinct.map { |r|
-      [r.upstream, r.upstream] }.sort
-  end
+# TODO test me
+def SuperfamilyInteraction.unique_families
+  all = SuperfamilyInteraction.all
+  downs = Set.new
+  ups = Set.new
 
-  # opts takes :collapse, and :min as options
-  def SuperfamilyInteraction.collapsed_interactions opts
-    name_map = Collapse.family_map
-    all_interactions = SuperfamilyInteraction.all
-    good_interactions = filter_uninformative_names all_interactions
-    opts[:min] = '2' if opts[:min] = ''
-    
-    if opts[:collapse].nil? || opts[:collapse].empty?
-      filter_count(count_interactions(good_interactions), 
-                   opts[:min])
-    else 
-      interactions = collapse_names(good_interactions, opts[:collapse],
-                                    name_map)
-      interactions = filter_names(interactions, 
-                                  opts[:collapse])
-      interaction_counts = count_interactions(interactions)
-      interaction_counts = filter_count(interaction_counts,
-                                        opts[:min])
-    end
+  all.each do |r|
+    downs << r.downstream
+    ups << r.upstream
   end
   
-  # TODO test me
-  def SuperfamilyInteraction.unique_families
-    all = SuperfamilyInteraction.all
-    downs = Set.new
-    ups = Set.new
-
-    all.each do |r|
-      downs << r.downstream
-      ups << r.upstream
-    end
-
-    downs.union(ups).sort
-  end
-
-
+  downs.union(ups).sort
 end
+
+
+

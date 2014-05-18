@@ -1,5 +1,14 @@
 require 'securerandom'
 
+# returns [start, length]
+def get_info name
+  coords = name.match(/_\d+_\d+_\d+$/).to_s.split('_')[1..2]
+    .map { |s| s.to_i }.sort.reverse
+
+  [ coords.last, coords.reduce(:-) + 1 ]
+end
+
+
 class NeighborhoodsController < ApplicationController
   # here is a hack to keep track of the last search which is needed
   # for download
@@ -73,17 +82,58 @@ class NeighborhoodsController < ApplicationController
   end
 
   def sfcontigs
+
+    # @contigs = 
+    #   params.select { |k,v| v == '1' }.map do |k,v|
+    #   s = ''
+    #   down, up = k.split(',')
+    #   SuperfamilyInteraction.filter_contigs(down, up).each do |st|
+    #     s << st + "\n"
+    #   end
+    #   s
+    # end
+
+    # [[contig, another, ...], [contig, another, ...]]
     @contigs = 
+      contigs = []
+      params.select { |k,v| v == '1' }.map do |k,v|
+      down, up = k.split(',')
+      contigs <<  SuperfamilyInteraction.filter_contigs(down, up)
+      contigs.flatten!
+    end
+
+    @orfs = @contigs.map do |contig|
+      { contig: contig.header, length: contig.contig.length, 
+        orfs: OrfInfo.where(contig: contig.header).to_a
+          .map { |orf| [orf.superfam, get_info(orf.name), orf.name].flatten }
+          .sort }
+    end
+
+    @orfs.flatten!
+
+    gon.contigs = @orfs.map { |o| o[:contig] }
+    gon.lengths = @orfs.map { |o| o[:length] }
+    # [[superfam, start, length], ...]
+    gon.orfs = @orfs.map { |o| o[:orfs] }
+    
+  end
+
+  def download_sfcontigs
+    @apples = 
       params.select { |k,v| v == '1' }.map do |k,v|
       s = ''
-      down, up = k.split(',')
-      SuperfamilyInteraction.filter_contigs(down, up).each do |st|
-        s << st + "\n"
+      get_me = k.split(',')
+      get_me.each_with_index do |item, idx|
+        if idx == 0
+          seq = Sequence.where(header: item).first
+          s << ">#{seq.header}\n#{seq.contig}\n"
+        else
+          orf = OrfInfo.where(name: item)
+          s << orf.map { |o| ">#{o.name}__#{o.superfam}" }.zip(orf.map { |o| o.orf_sequence }).flatten.join("\n") + "\n"
+        end
       end
       s
     end
-
-    send_data @contigs.join, filename: 'reads.fasta'
-
+    send_data @apples.join, filename: 'stuff.txt'
   end
 end
